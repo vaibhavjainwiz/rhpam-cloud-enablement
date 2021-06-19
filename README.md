@@ -1,0 +1,1 @@
+echo # rhpam-cloud-enablement
