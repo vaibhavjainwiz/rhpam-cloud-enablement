@@ -154,12 +154,6 @@ spec:
   gitSource:
     contextDir: dmn-quarkus-example
     uri: 'https://github.com/kiegroup/kogito-examples'
-  mavenMirrorURL: >-
-    http://nexus3-cloud-enablement-demo.apps.cluster-93d1.93d1.sandbox502.opentlc.com/repository/maven-public/
-  enableMavenDownloadOutput: true
-  env:
-    - name: MAVEN_IGNORE_SELF_SIGNED_CERTIFICATE
-      value: 'true'  
   type: RemoteSource
 ---
 apiVersion: rhpam.kiegroup.org/v1
@@ -179,7 +173,7 @@ metadata:
 spec:
   buildImage: quay.io/kiegroup/kogito-builder:latest
   runtimeImage: quay.io/kiegroup/kogito-runtime-jvm:latest
-  source: Binary
+  type: Binary
 ---
 apiVersion: rhpam.kiegroup.org/v1
 kind: KogitoRuntime
@@ -203,7 +197,7 @@ metadata:
 spec:
   buildImage: quay.io/kiegroup/kogito-builder:latest
   runtimeImage: quay.io/kiegroup/kogito-runtime-jvm:latest
-  source: LocalSource
+  type: LocalSource
 ---
 apiVersion: rhpam.kiegroup.org/v1
 kind: KogitoRuntime
