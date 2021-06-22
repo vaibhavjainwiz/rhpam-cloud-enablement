@@ -155,6 +155,7 @@ spec:
     contextDir: dmn-quarkus-example
     uri: 'https://github.com/kiegroup/kogito-examples'
   type: RemoteSource
+  enableMavenDownloadOutput: true
 ---
 apiVersion: rhpam.kiegroup.org/v1
 kind: KogitoRuntime
