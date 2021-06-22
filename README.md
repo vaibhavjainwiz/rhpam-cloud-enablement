@@ -7,22 +7,17 @@ Kogito operator deploys Kogito Runtime services on Openshift environment.
 * [Create RHPAM Kogito Operator Build Locally](#contributing-to-the-kogito-operator)
 * [Install RHPAM Kogito Operator](#contributing-to-the-kogito-operator)
 * [Prerequisite](#prerequisite)  
-* [Deploy Kogito Service](#contributing-to-the-kogito-operator)
-  * [From Kogito Runtime Image](#contributing-to-the-kogito-operator)
-  * [From Kogito Application code](#contributing-to-the-kogito-operator)  
+* [Deploy Kogito Service](#deploy-kogito-service)
+  * [From Kogito Runtime Image](#deploy-kogito-application-using-kogito-runtime-image)
+  * [From Kogito Application code](#deploy-kogito-application-using-kogito-build)  
     * [From Remote Source](#contributing-to-the-kogito-operator)
     * [From Local](#contributing-to-the-kogito-operator)
     * [From Binary Source](#contributing-to-the-kogito-operator)
 
 
-## Deploy Kogito Service
-Kogito service could be deployed in two ways :
-- From Kogito Runtime Custom Image
-- From Kogito Application code
-
 ## Prerequisite
 
-### Create a namespace
+**Create a namespace**
 ```
 kubectl create namespace cloud-enablement-demo
 ```
@@ -37,12 +32,18 @@ To know more about How to integrate Kogito Application with Prometheus and Grafa
 
 **Note:** Prometheus and Grafana Operator should be installed in same namespace in which Kogito Application needs to be deployed.
 
+## Deploy Kogito Service
+Kogito service could be deployed in two ways :
+* From Kogito Runtime Custom Image
+* From Kogito Application code
+
 ## Deploy Kogito Application using Kogito Runtime Image
 
 ###Create KogitoRuntime custom image
 
 **Step 1**: Compile Kogito application using maven.
 ```
+cd kogito-examples/dmn-drools-quarkus-metrics
 mvn clean install -DskipTests
 ```
 
@@ -140,12 +141,12 @@ spec:
 
 ![RHPAM Kogito Build Overview](./kogito_build.jpg?raw=true)
 
-Kogito Build using Remote source
+###Kogito Build using Remote source
 ```
 apiVersion: rhpam.kiegroup.org/v1
 kind: KogitoBuild
 metadata:
-  name: dmn-quarkus-example
+  name: dmn-quarkus-example-remote
   namespace: cloud-enablement-demo
 spec:
   buildImage: quay.io/kiegroup/kogito-builder:latest
@@ -160,51 +161,60 @@ spec:
     - name: MAVEN_IGNORE_SELF_SIGNED_CERTIFICATE
       value: 'true'  
   type: RemoteSource
+---
+apiVersion: rhpam.kiegroup.org/v1
+kind: KogitoRuntime
+metadata:
+  name: dmn-quarkus-example-remote
+  namespace: cloud-enablement-demo  
 ```
 
-Kogito Build using binary
+###Kogito Build using binary
 ```
 apiVersion: rhpam.kiegroup.org/v1
 kind: KogitoBuild
 metadata:
-  name: dmn-quarkus-example
+  name: dmn-quarkus-example-binary
   namespace: cloud-enablement-demo
 spec:
   buildImage: quay.io/kiegroup/kogito-builder:latest
   runtimeImage: quay.io/kiegroup/kogito-runtime-jvm:latest
   source: Binary
+---
+apiVersion: rhpam.kiegroup.org/v1
+kind: KogitoRuntime
+metadata:
+  name: dmn-quarkus-example-binary
+  namespace: cloud-enablement-demo  
 ```
 
-Trigger Build using oc client
+**Trigger Build using oc client**
 ```
-oc start-build dmn-quarkus-example-test --from-dir=/home/vaibhavjain/RedHatRepo/kogito-examples/dmn-drools-quarkus-metrics/target -n cloud-enablement-demo
+oc start-build dmn-quarkus-example-binary --from-dir=/home/vaibhavjain/RedHatRepo/kogito-examples/dmn-drools-quarkus-metrics/target -n cloud-enablement-demo
 ```
 
-Kogito Build using local source
+###Kogito Build using local source
 ```
 apiVersion: rhpam.kiegroup.org/v1
 kind: KogitoBuild
 metadata:
-  name: dmn-quarkus-example
+  name: dmn-quarkus-example-local
   namespace: cloud-enablement-demo
 spec:
   buildImage: quay.io/kiegroup/kogito-builder:latest
   runtimeImage: quay.io/kiegroup/kogito-runtime-jvm:latest
   source: LocalSource
-```
-
-Trigger Build using oc client
-```
-oc start-build dmn-quarkus-example-local-builder --from-file=/home/vaibhavjain/RedHatRepo/kogito-examples/dmn-quarkus-example/src/main/resources/TrafficViolation.dmn -n cloud-enablement-demo
-```
-
-Create KogitoRuntime instance
-```
+---
 apiVersion: rhpam.kiegroup.org/v1
 kind: KogitoRuntime
 metadata:
-  name: dmn-quarkus-example
-  namespace: cloud-enablement-demo
+  name: dmn-quarkus-example-local
+  namespace: cloud-enablement-demo    
+```
+
+**Trigger Build using oc client**
+```
+oc start-build dmn-quarkus-example-local-builder --from-file=/home/vaibhavjain/RedHatRepo/kogito-examples/dmn-quarkus-example/src/main/resources/TrafficViolation.dmn -n cloud-enablement-demo
 ```
 
 default {buildImage} is `registry.redhat.io/rhpam-7/rhpam-kogito-builder-rhel8:7.11` and {runtimeImage} is `registry.redhat.io/rhpam-7/rhpam-kogito-runtime-jvm-rhel8:7.11`. For a demo, I am using builder and runtime image of Community kogito operator because RHPAM builder and runtime images are not available at this instance.
