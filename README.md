@@ -41,13 +41,13 @@ Kogito service could be deployed in two ways :
 
 ###Create KogitoRuntime custom image
 
-**Step 1**: Compile Kogito application using maven.
+Step 1: Compile Kogito application using maven.
 ```
 cd kogito-examples/dmn-drools-quarkus-metrics
 mvn clean install -DskipTests
 ```
 
-**Step 2**: Create Dockerfile using `quay.io/kiegroup/kogito-runtime-jvm` as base image.
+Step 2: Create Dockerfile using `quay.io/kiegroup/kogito-runtime-jvm` as base image.
 ```
 FROM quay.io/kiegroup/kogito-runtime-jvm:latest
 
@@ -63,13 +63,13 @@ COPY target/quarkus-app/quarkus/ $KOGITO_HOME/bin/quarkus/
 # COPY target/lib $KOGITO_HOME/bin/lib
 ```
 
-**Step 3**: Create Docker image and push it to repo.
+Step 3: Create Docker image and push it to repo.
 ```
 docker build -t quay.io/vajain/dmn-drools-quarkus-metrics:1.0 .
 docker push quay.io/vajain/dmn-drools-quarkus-metrics:1.0
 ```
 
-**Step 4**: Deploy Kogito custom Image on Openshift
+Step 4: Deploy Kogito custom Image on Openshift
 ```
 apiVersion: rhpam.kiegroup.org/v1
 kind: KogitoRuntime
@@ -81,6 +81,7 @@ spec:
 ```
 
 ###Setup prometheus
+
 When you deploy a Kogito service that uses the `monitoring-prometheus-quarkus-addon` add-on and the Prometheus Operator is installed, the Kogito Operator creates a `ServiceMonitor` custom resource to expose the metrics for Prometheus.
 
 ####Create Prometheus Custom Resource
