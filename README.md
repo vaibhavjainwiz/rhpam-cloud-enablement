@@ -4,16 +4,15 @@
 Kogito operator deploys Kogito Runtime services on Openshift environment.
 
 ## Table of Contents
-* [Create RHPAM Kogito Operator Build Locally](#contributing-to-the-kogito-operator)
-* [Install RHPAM Kogito Operator](#contributing-to-the-kogito-operator)
+* [Create RHPAM Kogito Operator Build Locally](https://github.com/vaibhavjainwiz/rhpam-cloud-enablement/blob/main/build_operator.md#create-rhpam-kogito-operator-build-locally)
+* [Install RHPAM Kogito Operator](https://github.com/vaibhavjainwiz/rhpam-cloud-enablement/blob/main/build_operator.md#install-rhpam-kogito-operator)
 * [Prerequisite](#prerequisite)  
 * [Deploy Kogito Service](#deploy-kogito-service)
   * [From Kogito Runtime Image](#deploy-kogito-application-using-kogito-runtime-image)
   * [From Kogito Application code](#deploy-kogito-application-using-kogito-build)  
-    * [From Remote Source](#contributing-to-the-kogito-operator)
-    * [From Local](#contributing-to-the-kogito-operator)
-    * [From Binary Source](#contributing-to-the-kogito-operator)
-
+    * [From Remote Source](#kogito-build-using-remote-source)
+    * [From Binary Source](#kogito-build-using-binary)
+    * [From Local](#kogito-build-using-local-source)
 
 ## Prerequisite
 
